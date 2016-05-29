@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="modal">
+
+    <class name="Tarefa" table="tarefa">
+        <id name="id_geral" column="id_geral" type="long"/>
+
+        <property name="cd_usuario" column="cd_usuario" type="integer" not-null="true"/>        
+        <property name="nm_tarefa" column="nm_tarefa" type="string" not-null="true"/>
+        <property name="tempo_estimado" column="tempo_estimado" type="integer"/>        
+        <property name="tempo_utilizado" column="tempo_utilizado" type="integer"/>
+        <property name="percentual_desvio" column="percentual_desvio" type="float"/>
+        <property name="finalizada" column="finalizada" type="string" not-null="true"/>
+        <property name="pausada" column="pausada" type="string" not-null="true"/>
+    </class>
+
+</hibernate-mapping>
