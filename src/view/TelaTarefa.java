@@ -296,12 +296,9 @@ public class TelaTarefa extends JDialog {
 			limparCampos(true);
 		} else {
 			edtDescricao.setText(objTarefaRegras.getNm_tarefa());
-			Integer varInteger = new Integer(objTarefaRegras.getTempo_estimado());
-			edtEstimativa.setText(varInteger.toString());
-			varInteger = new Integer(objTarefaRegras.getTempo_utilizado());
-			edtUtilizado.setText(varInteger.toString());
-			Float varFloat = new Float(objTarefaRegras.getPercentual_desvio());
-			edtDesvio.setText(varFloat.toString());
+			edtEstimativa.setText(String.valueOf(objTarefaRegras.getTempo_estimado()));
+			edtUtilizado.setText(String.valueOf(objTarefaRegras.getTempo_utilizado()));
+			edtDesvio.setText(String.valueOf(objTarefaRegras.getPercentual_desvio()));
 			chkFinalizado.setSelected(objTarefaRegras.getFinalizada().equals("S"));
 			chkPausada.setSelected(objTarefaRegras.getPausada().equals("S"));
 
@@ -327,10 +324,12 @@ public class TelaTarefa extends JDialog {
 		ok = ((!edtCodigo.getText().isEmpty()) && (!edtDescricao.getText().isEmpty())
 				&& (comboUsuario.getSelectedItem() != null) && (!edtEstimativa.getText().isEmpty()));		
 		
-		if ((!ok) && (mostraMensagem))
+		if ((!ok) && (mostraMensagem)) {
 			JOptionPane.showMessageDialog(null,
 					"Atenção complete os dados da Tarefa: "
 					+ "\n \n" + "Código, Descrição, Usuário e Tempo Estimado são campos obrigatórios !");
+			return ok;
+		}
 
 		if ((ok) && (chkFinalizado.isSelected()))
 			ok = ((! edtEstimativa.getText().isEmpty() && (! edtEstimativa.getText().equals("0") )) && 
@@ -347,16 +346,11 @@ public class TelaTarefa extends JDialog {
 
 	private void salvaTarefa() {
 
-		Long objLong = new Long(edtCodigo.getText());
-		objTarefaRegras.setId_geral(objLong.longValue());
+		objTarefaRegras.setId_geral(Long.parseLong(edtCodigo.getText()));
 		objTarefaRegras.setNm_tarefa(edtDescricao.getText());
-		
-		Integer objInteger = new Integer(edtEstimativa.getText());
-		objTarefaRegras.setTempo_estimado(objInteger.intValue());
-		objInteger = new Integer(edtUtilizado.getText());
-		objTarefaRegras.setTempo_utilizado(objInteger.intValue());
-		Float varFloat = new Float(edtDesvio.getText());
-		objTarefaRegras.setPercentual_desvio(varFloat);
+		objTarefaRegras.setTempo_estimado(Integer.parseInt(edtEstimativa.getText()));
+		objTarefaRegras.setTempo_utilizado(Integer.parseInt(edtUtilizado.getText()));
+		objTarefaRegras.setPercentual_desvio(Float.parseFloat(edtDesvio.getText()));
 		
 		Usuario objTemp = (Usuario) comboUsuario.getSelectedItem();
 		objTarefaRegras.setCd_usuario(objTemp.getCd_usuario());
@@ -413,29 +407,7 @@ public class TelaTarefa extends JDialog {
 		if (validaFoco)
 			edtCodigo.grabFocus();
 	}
-	
-	private float percentualDesvio(int estiHora, int utiliHora) {
 		
-		if ((estiHora <= 0) || (utiliHora <= 0))
-			return 0f;
-		
-		float varTemp = 0;
-		
-		try {
-			
-			varTemp = (utiliHora * 100) / estiHora;
-			
-		}
-		catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Exceção ao calcular o % Desvio. Mensagem: " + ex.getMessage());
-			ex.printStackTrace();
-			return 0f;
-		}
-		
-		return varTemp;
-
-	}
-	
 	private void validaPercentualDesvio() {
 		
 		if ((! edtEstimativa.getText().isEmpty()) && 
@@ -443,11 +415,8 @@ public class TelaTarefa extends JDialog {
 			
 			try {
 					
-				Integer varEstimativa = new Integer(edtEstimativa.getText());
-				Integer varUtilizada = new Integer(edtUtilizado.getText());
-				Float varResultado = new Float(percentualDesvio(varEstimativa, varUtilizada));
-
-				edtDesvio.setText(varResultado.toString());
+				edtDesvio.setText(String.valueOf(objTarefaRegras.percentualDesvio(Integer.parseInt(edtEstimativa.getText()), 
+																				  Integer.parseInt(edtUtilizado.getText()))));
 					
 			}
 			catch (Exception ex) {

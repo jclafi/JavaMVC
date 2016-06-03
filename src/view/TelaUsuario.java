@@ -215,8 +215,7 @@ public class TelaUsuario extends JDialog {
 	@SuppressWarnings("deprecation")
 	private void salvaUsuario() {
 
-		Integer objInt = new Integer(edtCodigo.getText());
-		objUsuarioRegras.setCd_usuario(objInt.intValue());
+		objUsuarioRegras.setCd_usuario(Integer.parseInt(edtCodigo.getText()));
 		objUsuarioRegras.setNome(edtNome.getText());
 		objUsuarioRegras.setSenha(edtSenha.getText());
 		if (chkAtivo.isSelected())
@@ -268,16 +267,13 @@ public class TelaUsuario extends JDialog {
 
 	private void validaCodigo() {
 
-		Integer varInt = new Integer(0);
 		if (edtCodigo.getText().isEmpty()) {
 			limparCampos(false);
-			varInt = new Integer(objUsuarioRegras.getUsuarioPk());
-			edtCodigo.setText(varInt.toString());
-		} else {
-			varInt = new Integer(edtCodigo.getText());
-			carregarUsuario(varInt);
-		}
-
+			edtCodigo.setText(String.valueOf(objUsuarioRegras.getUsuarioPk()));
+		} 
+		else 
+			carregarUsuario(Integer.parseInt(edtCodigo.getText()));
+		
 	}
 
 	public void finalize() {

@@ -245,6 +245,35 @@ public class Usuario {
 			return getCd_usuario() + " - " + getNome() + " - Ativo: " + getAtivoExtenso();
 
 	}
+	
+	public boolean equals(Object o) {
+		
+		boolean igual = false;
+		
+		if (o == null) 
+			return false;
+		
+		if (! (o instanceof Usuario))
+			return false;
+		
+		Usuario user = (Usuario) o;
+		
+		igual = ((this.cd_usuario == user.getCd_usuario()) && 
+				 (this.nome == user.getNome()) &&
+				 (this.senha == user.getSenha()) &&
+				 (this.ativo == user.getAtivo()));
+			
+		return igual;
+		
+	}
+	
+	public int hashCode() {
+		
+		String atributos = (this.cd_usuario + this.nome + this.senha + this.ativo);
+		
+		return atributos.hashCode();
+		
+	}
 
 	public void disconnect() {
 

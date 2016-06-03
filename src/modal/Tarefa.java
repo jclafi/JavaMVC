@@ -1,6 +1,9 @@
 package modal;
 
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -225,7 +228,68 @@ public class Tarefa {
 
 		return longPK;
 	}
+	
+	public boolean equals(Object o) {
+		
+		boolean igual = false;
+		
+		if (o == null)
+			return false;
+		
+		if (!(o instanceof Tarefa))
+			return false;
+		
+		Tarefa task = (Tarefa) o;
+		
+		igual = ((this.id_geral == task.getId_geral()) &&
+				 (this.cd_usuario == task.getCd_usuario()) &&
+				 (this.nm_tarefa == task.getNm_tarefa()) &&
+				 (this.tempo_estimado == task.getTempo_estimado()) &&
+				 (this.tempo_utilizado == task.getTempo_utilizado()) &&
+				 (this.percentual_desvio == task.getPercentual_desvio()) &&
+				 (this.finalizada == task.getFinalizada()) &&
+				 (this.pausada == task.getPausada()));
+		
+		return igual;
+	}
+	
+	public int hashCode() {
+		
+		String atributos = (this.id_geral + 
+							this.cd_usuario + 
+							this.nm_tarefa + 
+							this.tempo_estimado + 
+							this.tempo_utilizado + 
+							this.percentual_desvio + 
+							this.finalizada + 
+							this.pausada);
+		
+		return atributos.hashCode();
+		
+	}
 
+	public float percentualDesvio(int estiHora, int utiliHora) {
+		
+		if ((estiHora <= 0) || (utiliHora <= 0))
+			return 0f;
+		
+		float varTemp = 0;
+		
+		try {
+			
+			varTemp = (utiliHora * 100) / estiHora;
+			
+		}
+		catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Exceção ao calcular o % Desvio. Mensagem: " + ex.getMessage());
+			ex.printStackTrace();
+			return 0f;
+		}
+		
+		return varTemp;
+
+	}
+	
 	public void disconnect() {
 
 		TarefaDao objPersistente = new TarefaDao();
