@@ -16,7 +16,6 @@ public class TarefaDao {
 	public Tarefa getObjRegra() {
 		return objRegra;
 	}
-
 	public void setObjRegra(Tarefa objRegra) {
 		this.objRegra = objRegra;
 	}
@@ -155,6 +154,7 @@ public class TarefaDao {
 		try {
 			setObjRegra(session.get(Tarefa.class, idTarefa));
 		} catch (Exception ex) {
+			setObjRegra(null);
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Exceção ao Carregar Tarefa: " + ex.getMessage());
 			return false;
